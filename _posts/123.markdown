@@ -7,7 +7,7 @@ author:     "Xiaosheng"
 header-img: "img/bg/hello_world.jpg"
 catalog: true
 tags:
-- 说明
+    - 说明
 ---
 
 这是 xs-huxblog 博客模板的一篇示例文档，使用 Markdown 语法编写。
