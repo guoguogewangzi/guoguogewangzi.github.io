@@ -22,7 +22,7 @@ https://github.com/shadowsocks/shadowsocks-rust/releases
 
 
 
-![image-20211119184619240](../assets/image-20211119184619240.png)
+![image-20211119184619240](/assets/image-20211119184619240.png)
 
 
 
@@ -160,27 +160,27 @@ shadowsocks-windows客户端下载：
 
 https://github.com/shadowsocks/shadowsocks-windows/releases
 
-![image-20211119190509327](../assets/image-20211119190509327.png)
+![image-20211119190509327](/assets/image-20211119190509327.png)
 
 
 
 添加配置并确定：
 
-![image-20211119190713593](../assets/image-20211119190713593.png)
+![image-20211119190713593](/assets/image-20211119190713593.png)
 
 浏览器设置代理：
 
-![image-20211119190914552](../assets/image-20211119190914552.png)
+![image-20211119190914552](/assets/image-20211119190914552.png)
 
 
 
 代理成功：
 
-![image-20211119190946163](../assets/image-20211119190946163.png)
+![image-20211119190946163](/assets/image-20211119190946163.png)
 
 
 
 测试：https://www.youtube.com/
 
-![image-20211119191504818](../assets/image-20211119191504818.png)
+![image-20211119191504818](/assets/image-20211119191504818.png)
 
