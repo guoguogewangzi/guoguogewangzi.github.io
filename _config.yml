@@ -2,14 +2,14 @@
 title: guoguogewangzi
 SEOTitle: guoguogewangzi
 header-img: img/bg/bg_index.jpg
-email: jsksxs360@163.com
+email: 879086359@qq.com
 description: ""
 keyword: ""
 url: "https://guoguogewangzi.github.io"              # your host, for absolute URL
 baseurl: "/"                             # for example, '/blog' if your blog hosted on 'host/blog'
 
 # SNS settings
-douban_username: 138483825
+douban_username: guoguogewangzi
 weibo_username: guoguogewangzi
 zhihu_username: guoguogewangzi
 github_username: guoguogewangzi
@@ -49,7 +49,7 @@ ba_track_id: 07529a93af5fa9f808261a1318c3aba4
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "专注IT，乐于分享。"
-sidebar-avatar: /xs-huxblog/img/avatar-xs.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: /img/avatar-xs.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 # Featured Tags
 featured-tags: true                     # whether or not using Feature-Tags
