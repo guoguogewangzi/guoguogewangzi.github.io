@@ -30,7 +30,7 @@ Category: [Unit 42](https://unit42.paloaltonetworks.com/category/unit-42/)
 
 Tags: [pcap](https://unit42.paloaltonetworks.com/tag/pcap/), [tutorial](https://unit42.paloaltonetworks.com/tag/tutorial/), [Wireshark](https://unit42.paloaltonetworks.com/tag/wireshark/), [Wireshark Tutorial](https://unit42.paloaltonetworks.com/tag/wireshark-tutorial/)
 
-![](/assets/Wireshark教程显示过滤器表达式/tutorial-900x512.png)
+![](/assets/tutorial-900x512.png)
 
 This post is also available in: [日本語 (Japanese)](https://unit42.paloaltonetworks.jp/using-wireshark-display-filter-expressions/)
 
@@ -54,15 +54,15 @@ Indicators consist of information derived from network traffic that relates to t
 
 Wireshark's display filter a bar located right above the column display section. This is where you type expressions to filter the frames, IP packets, or TCP segments that Wireshark displays from a pcap.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure1.png)_Figure 1. Location of the display filter in Wireshark._
+![](/assets/Figure1.png)_Figure 1. Location of the display filter in Wireshark._
 
 If you type anything in the display filter, Wireshark offers a list of suggestions based on the text you have typed. While the display filter bar remains red, the expression is not yet accepted. If the display filter bar turns green, the expression has been accepted and should work properly. If the display filter bar turns yellow, the expression has been accepted, but it will probably not work as intended.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure2.png)_Figure 2. Wireshark's display filter offering suggestions based on what you type._
+![](/assets/Figure2.png)_Figure 2. Wireshark's display filter offering suggestions based on what you type._
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure3.png)_Figure 3. Wireshark's display filter accepts an expression, and it works as intended._
+![](/assets/Figure3.png)_Figure 3. Wireshark's display filter accepts an expression, and it works as intended._
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure4.png)_Figure 4. Example of Wireshark's display filter accepting an expression, but it does not work as intended._
+![](/assets/Figure4.png)_Figure 4. Example of Wireshark's display filter accepting an expression, but it does not work as intended._
 
 Wireshark's display filter uses [Boolean expressions](https://en.wikipedia.org/wiki/Boolean_expression), so you can specify values and chain them together. The following expressions are commonly used:
 
@@ -89,7 +89,7 @@ The value **_http.request_** reveals URLs for HTTP requests, and **_ssl.handshak
 
 My previous tutorial contains web traffic generated when a user viewed a URL from **_college.usatoday\[.\]com_** in August 2018. In the pcap, the user was on a Windows 10 computer using Microsoft's Edge web browser. Filtering on **_http.request or ssl.handshake.type == 1_** outlines the flow of events for this web traffic.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure5.png)_Figure 5. Filtering on web traffic using the previous tutorial's pcap._
+![](/assets/Figure5.png)_Figure 5. Filtering on web traffic using the previous tutorial's pcap._
 
 However, I also generate pcaps of traffic using Windows 7 hosts, and this traffic includes HTTP requests over UDP port 1900 during normal activity. This HTTP traffic over UDP port 1900 is Simple Service Discovery Protocol (SSDP). SSDP is a protocol used to discover Plug & Play devices, and it is not associated with normal web traffic. Therefore, I filter this out using the following expression:
 
@@ -101,9 +101,9 @@ You can also use the following filter and achieve the same result:
 
 Filtering out SSDP activity when reviewing a pcap from an infection on a Windows 7 host provides a much clear view of the traffic. Figure 6 shows Emotet activity with IcedID infection traffic from December 3rd, 2018 on a Windows 7 host. It is filtered on web traffic that contains SSDP requests. Figure 7 shows the same pcap filtered on web traffic _excluding_ the SSDP requests, which provides a clearer picture of the activity.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure6.png)_Figure 6. Reviewing web traffic with Emotet and IcedID infection activity in Wireshark without filtering out SSDP traffic._
+![](/assets/Figure6.png)_Figure 6. Reviewing web traffic with Emotet and IcedID infection activity in Wireshark without filtering out SSDP traffic._
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure7.png)_Figure 7. Reviewing web traffic with Emotet and IcedID infection activity in Wireshark while filtering out SSDP traffic._
+![](/assets/Figure7.png)_Figure 7. Reviewing web traffic with Emotet and IcedID infection activity in Wireshark while filtering out SSDP traffic._
 
 In Figure 7, we see some indicators of infection traffic, but not every indicator of the infection is revealed. In some cases, an infected host may try to connect with a server that has been taken off-line or is refusing a TCP connection. These attempted connections can be revealed by including TCP SYN segments in your filter by adding **_tcp.flags eq 0x0002_**. Try the following filter on the same traffic:
 
@@ -111,7 +111,7 @@ In Figure 7, we see some indicators of infection traffic, but not every indicato
 
 Including the TCP SYN segments on your search reveals the infected host also attempted to connect with IP address 217.164.2\[.\]133 over TCP port 8443 as shown in Figure 8.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure8.png)_Figure 8. Including TCP SYN segments in your filter can reveal unsuccessful connection attempts by an infected host to other servers._
+![](/assets/Figure8.png)_Figure 8. Including TCP SYN segments in your filter can reveal unsuccessful connection attempts by an infected host to other servers._
 
 # Filters for Other Types of Infection Traffic
 
@@ -123,19 +123,19 @@ Therefore, I often add DNS activity when reviewing a pcap to see if any of these
 
 In Figure 9, I use the above filter expression to review a pcap showing a Nanocore RAT executable file downloaded from **_www.mercedes-club-bg\[.\]com_** to infect a vulnerable Windows host. The initial download is followed by attempted TCP connections to **_franex.sytes\[.\]net_** at 185.163.45\[.\]48 and **_franexserve.duckdns\[.\]org_** at 95.213.251\[.\]165. Figure 10 shows the correlation between the DNS queries and the TCP traffic.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure9.png)_Figure 9. Including DNS queries reveals attempted TCP connections to additional domains._
+![](/assets/Figure9.png)_Figure 9. Including DNS queries reveals attempted TCP connections to additional domains._
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure10.png)_Figure 10. Correlating DNS traffic to the TCP activity._
+![](/assets/Figure10.png)_Figure 10. Correlating DNS traffic to the TCP activity._
 
 Some infection traffic uses common protocols that can easily be decoded by Wireshark. Figure 11 shows post-infection traffic caused by [this malware executable](https://www.virustotal.com/#/file/d5c7ac49ea9ba23c2822b62b7acf413fb8b35ac70744a42102e000c39bac03fc/) that generates FTP traffic. Using a standard web traffic search that also checks for DNS traffic and TCP SYN flags, we find traffic over TCP port 21 and other TCP ports after a DNS query to **_ftp.totallyanonymous\[.\]com_**.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure11.png)_Figure 11. Activity from malware generating FTP traffic._
+![](/assets/Figure11.png)_Figure 11. Activity from malware generating FTP traffic._
 
 Realizing this is FTP traffic, you can pivot on **_ftp_** for your display filter as shown in Figure 12. When filtering on **_ftp_** for this pcap, we find the infected Windows host logged into an FTP account at **_totallyanonymous.com_** and retrieved files named **_fc32.exe_** and **_o32.exe_**. Scroll down to later FTP traffic as shown in Figure 13, and you will find a file named **_6R7MELYD6_** sent to the FTP server approximately every minute. Further investigation would reveal **_6R7MELYD6_** contains password data stolen from the infected Windows host.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure12.png)_Figure 12. Using ftp as a filter and finding the name of files retrieved by the infected host when viewing the FTP control channel over TCP port 21._
+![](/assets/Figure12.png)_Figure 12. Using ftp as a filter and finding the name of files retrieved by the infected host when viewing the FTP control channel over TCP port 21._
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure13.png)_Figure 13. The FTP control channel over TCP port 21 also shows information stored to the FTP server as a file named 6R7MELYD6._
+![](/assets/Figure13.png)_Figure 13. The FTP control channel over TCP port 21 also shows information stored to the FTP server as a file named 6R7MELYD6._
 
 In addition to FTP, malware can use other common protocols for malicious traffic. Spambot malware can turn an infected host into a spambot designed to send dozens to hundreds of email messages every minute. This is characterized by several DNS requests to various mail servers followed by SMTP traffic on TCP ports 25, 465, 587, or other TCP ports associated with email traffic.
 
@@ -145,11 +145,11 @@ Let's try this filter expression again:
 
 When viewing spambot traffic, you'll find DNS queries to mail servers and TCP traffic to SMTP-related ports as previously described.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure14.png)_Figure 14. Wireshark filtered on spambot traffic to show DNS queries for various mail servers and TCP SYN packets to TCP ports 465 and 587 related to SMTP traffic._
+![](/assets/Figure14.png)_Figure 14. Wireshark filtered on spambot traffic to show DNS queries for various mail servers and TCP SYN packets to TCP ports 465 and 587 related to SMTP traffic._
 
 If you use **_smtp_** as a filter expression, you'll find several results. In cases where you find STARTTLS, this will likely be encrypted SMTP traffic, and you will not be able to see the email data.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure15.png)_Figure 15. Filtering on SMTP traffic in Wireshark when viewing spambot traffic._
+![](/assets/Figure15.png)_Figure 15. Filtering on SMTP traffic in Wireshark when viewing spambot traffic._
 
 In recent years, email traffic from spambots is most likely encrypted SMTP.  However, you might find unencrypted SMTP traffic by searching for strings in common email header lines like:
 
@@ -159,17 +159,17 @@ In recent years, email traffic from spambots is most likely encrypted SMTP.  How
 
 Keep in mind the Wireshark display filter is case-sensitive.  When searching spambot traffic for unencrypted SMTP communications, I often use **_smtp contains "From: "_** as my filter expression as shown in Figure 16.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure16.png)_Figure 16. Filtering in Wireshark to find email header lines for unencrypted SMTP traffic._
+![](/assets/Figure16.png)_Figure 16. Filtering in Wireshark to find email header lines for unencrypted SMTP traffic._
 
 After filtering for SMTP traffic as show in Figure 16, you can follow TCP stream for any of the displayed frames, and you'll find one of the emails sent from the spambot.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure17.png)_Figure 17. TCP stream showing unencrypted SMTP traffic from a spambot-infected host._
+![](/assets/Figure17.png)_Figure 17. TCP stream showing unencrypted SMTP traffic from a spambot-infected host._
 
 # Saving Your Filters
 
 Some filter expressions are very tedious to type out each time, but you can save them as filter buttons. On the right side of the Wireshark filter bar is a plus sign to add a filter button.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure18.png)_Figure 18. Saving a filter expression as a filter expression button in Wireshark._
+![](/assets/Figure18.png)_Figure 18. Saving a filter expression as a filter expression button in Wireshark._
 
 Click on that plus sign to save your expression as a filter button. You have the following fields:
 
@@ -179,11 +179,11 @@ Click on that plus sign to save your expression as a filter button. You have the
 
 The comment is optional, and the filter defaults to whatever is currently typed in the Wireshark filter bar.  Once you have typed your label, then click the OK button as shown in Figure 19.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure19.png)_Figure 19. After typing a filter label, click the OK button._
+![](/assets/Figure19.png)_Figure 19. After typing a filter label, click the OK button._
 
 In the above image, I typed "basic" for the filter **_(http.request or ssl.handshake.type == 1) and !(udp.port eq 1900)_** to save as my basic filter.  Figure 20 show that filter button labeled "basic" to the right of the plus sign.
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure20.png)_Figure 20. My "basic" filter button at the far right of the filter bar._
+![](/assets/Figure20.png)_Figure 20. My "basic" filter button at the far right of the filter bar._
 
 For my normal filter setup in Wireshark, I create the following filter buttons:
 
@@ -191,7 +191,7 @@ For my normal filter setup in Wireshark, I create the following filter buttons:
 - basic+ **_(http.request or ssl.handshake.type == 1 or tcp.flags eq 0x0002) and !(udp.port eq 1900)_**
 - basic+DNS **_(http.request or ssl.handshake.type == 1 or tcp.flags eq 0x0002 or dns) and !(udp.port eq 1900)_**
 
-![](/assets/Wireshark教程显示过滤器表达式/Figure21.png)
+![](/assets/Figure21.png)
 
 _Figure 21. Filter buttons I routinely use on Wireshark._
 
