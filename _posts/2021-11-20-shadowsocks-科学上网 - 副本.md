@@ -18,7 +18,7 @@ tags:
 
 查看`jiami文件`:
 
-![image-20211120003416148](/assets/image-20211120003416148.png)
+![image-20211120003416148](assets/image-20211120003416148.png)
 
 
 shadowsocks服务端下载：
