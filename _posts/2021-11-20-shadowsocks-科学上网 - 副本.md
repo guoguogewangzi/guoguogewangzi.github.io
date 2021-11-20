@@ -12,7 +12,45 @@ tags:
 
 
 
-# shadowsocks-科学上网
+# [openssl用法详解](https://www.cnblogs.com/yangxiaolan/p/6256838.html)
+
+OpenSSL 是一个开源项目，其组成主要包括一下三个组件：
+
+- openssl：多用途的命令行工具
+- libcrypto：加密算法库
+- libssl：加密模块应用库，实现了ssl及tls
+
+openssl可以实现：秘钥证书管理、对称加密和非对称加密 。
+
+#### 1、对称加密
+
+对称加密需要使用的标准命令为 enc ，用法如下：
+
+```css
+openssl enc -ciphername [-in filename] [-out filename] [-pass arg] [-e] [-d] [-a/-base64]
+       [-A] [-k password] [-kfile filename] [-K key] [-iv IV] [-S salt] [-salt] [-nosalt] [-z] [-md]
+       [-p] [-P] [-bufsize number] [-nopad] [-debug] [-none] [-engine id]
+```
+
+常用选项有：
+
+-in filename：指定要加密的文件存放路径
+
+-out filename：指定加密后的文件存放路径
+
+-salt：自动插入一个随机数作为文件内容加密，默认选项
+
+-e：可以指明一种加密算法，若不指的话将使用默认加密算法
+
+-d：解密，解密时也可以指定算法，若不指定则使用默认算法，但一定要与加密时的算法一致
+
+-a/-base64：使用-base64位编码格式
+
+```stata
+示例：
+加密：]# openssl enc -e -des3 -a -salt -in 2.pcap -out jiami         #jiami：为ASCII text
+解密：]# openssl enc -d -des3 -a -salt -in jiami -out jiemi.pcap     #可以在指定-k：密码
+```
 
 
 
@@ -21,175 +59,198 @@ tags:
 ![image-20211120003416148](/assets/image-20211120003416148.png)
 
 
+
+#### 2、单向加密
+
+单向加密需要使用的标准命令为 dgst ，用法如下：
+
+```inform7
+openssl dgst [-md5|-md4|-md2|-sha1|-sha|-mdc2|-ripemd160|-dss1] [-c] [-d] [-hex] [-binary]
+       [-out filename] [-sign filename] [-keyform arg] [-passin arg] [-verify filename] [-prverify
+       filename] [-signature filename] [-hmac key] [file...]
+```
+
+常用选项有：
+
+[-md5|-md4|-md2|-sha1|-sha|-mdc2|-ripemd160|-dss1] ：指定一种加密算法
+
+-out filename：将加密的内容保存到指定文件中
+
 示例如下：
 
 ![img](/assets/a6jMF37.png)
 
-shadowsocks服务端下载：
+单向加密除了 openssl dgst 工具还有： md5sum，sha1sum，sha224sum，sha256sum ，sha384sum，sha512sum
 
-https://github.com/shadowsocks/shadowsocks-rust/releases
+示例如下：
 
+![img](/assets/IZJvEvr.png)
 
+#### 3、生成密码
 
-![image-20211119184619240](/assets/image-20211119184619240.png)
+生成密码需要使用的标准命令为 passwd ，用法如下：
 
-
-
-
-
-解压：
-
-```shell
-[root@xuegod63 ~]# xz -d shadowsocks-v1.12.2.x86_64-unknown-linux-gnu.tar.xz
-[root@xuegod63 ~]# mkdir shadowsocks
-[root@xuegod63 ~]# cd shadowsocks
-[root@xuegod63 shadowsocks]# mv ../shadowsocks-v1.12.2.x86_64-unknown-linux-gnu.tar .
-[root@xuegod63 shadowsocks]# ll
-total 27752
--rw-r--r-- 1 root root 28416000 Nov 19 18:23 shadowsocks-v1.12.2.x86_64-unknown-linux-gnu.tar
-[root@xuegod63 shadowsocks]# tar xvf shadowsocks-v1.12.2.x86_64-unknown-linux-gnu.tar
-sslocal
-ssserver
-ssurl
-ssmanager
-[root@xuegod63 shadowsocks]# ll
-total 55504
--rw-r--r-- 1 root root 28416000 Nov 19 18:23 shadowsocks-v1.12.2.x86_64-unknown-linux-gnu.tar
--rwxr-xr-x 1 lisa  121 10289840 Nov 16 16:09 sslocal
--rwxr-xr-x 1 lisa  121  7535112 Nov 16 16:08 ssmanager
--rwxr-xr-x 1 lisa  121  7370928 Nov 16 16:09 ssserver
--rwxr-xr-x 1 lisa  121  3213064 Nov 16 16:08 ssurl
+```css
+openssl passwd [-crypt] [-1] [-apr1] [-salt string] [-in file] [-stdin] [-noverify] [-quiet] [-table] {password}
 ```
 
+常用选项有：
 
+-1：使用md5加密算法
 
-添加配置文件`config.json`
+-salt string：加入随机数，最多8位随机数
 
-```shell
-[root@xuegod63 shadowsocks]# vi config.json
-[root@xuegod63 shadowsocks]# cat config.json
-{
-    "server": "0.0.0.0",                        #服务器监听所有ip
-    "server_port": 8388,                        #服务器端口
-    "password": "123",                           #服务器密码
-    "method": "aes-256-gcm",                    #加密类型
-    // ONLY FOR `sslocal`
-    // Delete these lines if you are running `ssserver` or `ssmanager`
-    "local_address": "127.0.0.1",              
-    "local_port": 1080
-}
+-in file：对输入的文件内容进行加密
 
+-stdion：对标准输入的内容进行加密
+
+示例如下：
+
+![img](/assets/3E3UVrf.png)
+
+#### 4、生成随机数
+
+生成随机数需要用到的标准命令为 rand ，用法如下：
+
+```css
+openssl rand [-out file] [-rand file(s)] [-base64] [-hex] num
 ```
 
+常用选项有：
 
+-out file：将生成的随机数保存至指定文件中
 
-启动服务器`ssserver`：
+-base64：使用base64 编码格式
 
-```shell
-[root@xuegod63 shadowsocks]# ./ssserver -c config.json
-./ssserver: /lib64/libc.so.6: version `GLIBC_2.18' not found (required by ./ssserver)   #报错
+-hex：使用16进制编码格式
+
+示例如下：
+
+![img](/assets/R3QJJfV.png)
+
+#### 5、生成秘钥对
+
+首先需要先使用 genrsa 标准命令生成私钥，然后再使用 rsa 标准命令从私钥中提取公钥。
+
+genrsa 的用法如下：
+
+```css
+openssl genrsa [-out filename] [-passout arg] [-des] [-des3] [-idea] [-f4] [-3] [-rand file(s)] [-engine id] [numbits]
 ```
 
+常用选项有：
 
+-out filename：将生成的私钥保存至指定的文件中
 
-报错解决：
+-des|-des3|-idea：不同的加密算法
 
-https://blog.csdn.net/lj2048/article/details/112425892
+numbits：指定生成私钥的大小，默认是2048
 
-```shell
-[root@xuegod63 ~]# strings /usr/lib64/libstdc++.so.6 | grep GLIBC     #查看是否包含GLIBC_2.18
-GLIBCXX_3.4
-GLIBCXX_3.4.1
-GLIBCXX_3.4.2
-GLIBCXX_3.4.3
-GLIBCXX_3.4.4
-GLIBCXX_3.4.5
-GLIBCXX_3.4.6
-GLIBCXX_3.4.7
-GLIBCXX_3.4.8
-GLIBCXX_3.4.9
-GLIBCXX_3.4.10
-GLIBCXX_3.4.11
-GLIBCXX_3.4.12
-GLIBCXX_3.4.13
-GLIBCXX_3.4.14
-GLIBCXX_3.4.15
-GLIBCXX_3.4.16
-GLIBCXX_3.4.17
-GLIBCXX_3.4.18
-GLIBCXX_3.4.19
-GLIBC_2.3
-GLIBC_2.2.5
-GLIBC_2.14
-GLIBC_2.4
-GLIBC_2.3.2
-GLIBCXX_DEBUG_MESSAGE_LENGTH
-[root@xuegod63 ~]# yum install gcc
-[root@xuegod63 ~]# mkdir software && cd software
-[root@xuegod63 software]# wget http://ftp.gnu.org/gnu/glibc/glibc-2.18.tar.gz
---2021-11-19 18:40:42--  http://ftp.gnu.org/gnu/glibc/glibc-2.18.tar.gz
-Resolving ftp.gnu.org (ftp.gnu.org)... 209.51.188.20, 2001:470:142:3::b
-Connecting to ftp.gnu.org (ftp.gnu.org)|209.51.188.20|:80... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 23428909 (22M) [application/x-gzip]
-Saving to: ‘glibc-2.18.tar.gz’
+一般情况下秘钥文件的权限一定要控制好，只能自己读写，因此可以使用 umask 命令设置生成的私钥权限，示例如下：
 
-100%[===================================================>] 23,428,909  5.37MB/s   in 4.2s
+![img](/assets/JFRRJjv.png)
 
-2021-11-19 18:40:47 (5.37 MB/s) - ‘glibc-2.18.tar.gz’ saved [23428909/23428909]
+ras 的用法如下：
 
-[root@xuegod63 software]# ll
-total 22880
--rw-r--r-- 1 root root 23428909 Aug 13  2013 glibc-2.18.tar.gz
-[root@xuegod63 software]# tar zxf glibc-2.18.tar.gz
-[root@xuegod63 software]# cd glibc-2.18
-[root@xuegod63 glibc-2.18]# mkdir build
-[root@xuegod63 glibc-2.18]# cd build/
-[root@xuegod63 build]# ../configure --prefix=/usr              
-[root@xuegod63 build]# sudo make -j4                    #等待几分钟
-[root@xuegod63 build]# sudo make install
-[root@xuegod63 build]# strings /usr/lib64/libstdc++.so.6 | grep GLIBC     #查看，但仍然没有，没关系，继续启动服务器
-
+```css
+openssl rsa [-inform PEM|NET|DER] [-outform PEM|NET|DER] [-in filename] [-passin arg] [-out filename] [-passout arg]
+       [-sgckey] [-des] [-des3] [-idea] [-text] [-noout] [-modulus] [-check] [-pubin] [-pubout] [-engine id]
 ```
 
+常用选项：
+
+-in filename：指明私钥文件
+
+-out filename：指明将提取出的公钥保存至指定文件中
+
+-pubout：根据私钥提取出公钥
+
+示例如下：
+
+![img](/assets/6j2uMj7.png)
+
+#### 6、创建CA和申请证书
+
+使用openssl工具创建CA证书和申请证书时，需要先查看配置文件，因为配置文件中对证书的名称和存放位置等相关信息都做了定义，具体可参考 /etc/pki/tls/openssl.cnf 文件。
+
+![img](/assets/ueYvai.png)
+
+![img](/assets/QBRjaij.png)
+
+#### （1）、创建自签证书
+
+第一步：创建为 CA 提供所需的目录及文件
+
+![img](/assets/b2I3AbJ.png)
+
+第二步：指明证书的开始编号
+
+]# echo 01 >> serial
+
+第三步：生成私钥，私钥的文件名与存放位置要与配置文件中的设置相匹配；
+
+![img](/assets/auYNvyb.png)
+
+第四步：生成自签证书，自签证书的存放位置也要与配置文件中的设置相匹配，生成证书时需要填写相应的信息；
+
+![img](/assets/JVVRZvn.png)
+
+命令中用到的选项解释：
+
+-new：表示生成一个新证书签署请求
+
+-x509：专用于CA生成自签证书，如果不是自签证书则不需要此项
+
+-key：生成请求时用到的私钥文件
+
+-out：证书的保存路径
+
+-days：证书的有效期限，单位是day（天），默认是365天
+
+#### （2）颁发证书
+
+在需要使用证书的主机上生成证书请求，以 httpd 服务为例，步骤如下：
+
+第一步：在需要使用证书的主机上生成私钥，这个私钥文件的位置可以随意定
+
+第二步：生成证书签署请求
+
+第三步：将请求通过可靠方式发送给 CA 主机
+
+![img](/assets/fU7v2mA.png)
+
+第四步：CA 服务器拿到证书签署请求文件后颁发证书，这一步是在 CA 服务器上做的
+
+![img](/assets/VrqQFrZ.png)
+
+查看证书信息的命令为：
+
+![img](/assets/BfYnqiI.png)
+
+#### （3）吊销证书
+
+吊销证书的步骤也是在CA服务器上执行的，以刚才新建的 httpd.crt 证书为例，吊销步骤如下：
+
+第一步：在客户机上获取要吊销证书的 serial 和 subject 信息
+
+第二步：根据客户机提交的 serial 和 subject 信息，对比其余本机数据库 index.txt 中存储的是否一致
+
+第三步：执行吊销操作
+
+![img](/assets/J3Ufyya.png)
+
+第四步：生成吊销证书的吊销编号 （第一次吊销证书时执行）
+
+]# echo 01 > /etc/pki/CA/crlnumber
+
+第五步：更新证书吊销列表
+
+]# openssl ca -gencrl -out /etc/pki/CA/crl/ca.crl
+
+查看 crl 文件命令：
+
+]# openssl crl -in /etc/pki/CA/crl/ca.crl -noout -text
 
 
-成功启动服务：
 
-```shell
-[root@xuegod63 shadowsocks]# ./ssserver -c config.json
-2021-11-19T19:01:36.108888756+08:00 INFO  shadowsocks server 1.12.2 build 2021-11-16T08:08:35.305971730+00:00
-2021-11-19T19:01:36.109958919+08:00 INFO  shadowsocks tcp server listening on 0.0.0.0:8388, inbound address 0.0.0.0:8388
-
-```
-
-
-
-shadowsocks-windows客户端下载：
-
-https://github.com/shadowsocks/shadowsocks-windows/releases
-
-![image-20211119190509327](/assets/image-20211119190509327.png)
-
-
-
-添加配置并确定：
-
-![image-20211119190713593](/assets/image-20211119190713593.png)
-
-浏览器设置代理：
-
-![image-20211119190914552](/assets/image-20211119190914552.png)
-
-
-
-代理成功：
-
-![image-20211119190946163](/assets/image-20211119190946163.png)
-
-
-
-测试：https://www.youtube.com/
-
-![image-20211119191504818](/assets/image-20211119191504818.png)
-
+原文 [http://www.178linux.com/48764](http://www.178linux.com/48764?utm_source=tuicool&utm_medium=referral)
