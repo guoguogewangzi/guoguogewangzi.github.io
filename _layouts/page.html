@@ -50,16 +50,6 @@ layout: default
                 </section>
                 {% endif %}
 
-                <!-- Friends Blog -->
-                {% if site.friends %}
-                <hr>
-                <h5>友情链接</h5>
-                <ul class="list-inline">
-                    {% for friend in site.friends %}
-                        <li><a href="{{friend.href}}">{{friend.title}}</a></li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
             </div>
         {% else %}
 
@@ -113,36 +103,8 @@ layout: default
                         {% endif %}
                         <!-- SNS Link -->
                         <ul class="list-inline">
-                            {% if site.zhihu_username %}
-                            <li>
-                                <a target="_blank" href="https://www.zhihu.com/people/{{ site.zhihu_username }}">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-stack-1x fa-inverse">知</i>
-                                    </span>
-                                </a>
-                            </li>
-                            {% endif %}
-                            {% if site.douban_username %}
-                            <li>
-                                <a target="_blank" href="https://www.douban.com/people/{{ site.douban_username }}">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-stack-1x fa-inverse">豆</i>
-                                    </span>
-                                </a>
-                            </li>
-                            {% endif %}
-                            {% if site.weibo_username %}
-                            <li>
-                                <a target="_blank" href="http://weibo.com/{{ site.weibo_username }}">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            {% endif %}
+
+
                             {% if site.github_username %}
                             <li>
                                 <a target="_blank" href="https://github.com/{{ site.github_username }}">
@@ -166,16 +128,7 @@ layout: default
                         </ul>
                     </div>
                 </section>
-                <!-- Friends Blog -->
-                {% if site.friends %}
-                <hr>
-                <h5>友情链接</h5>
-                <ul class="list-inline">
-                    {% for friend in site.friends %}
-                        <li><a href="{{friend.href}}">{{friend.title}}</a></li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
+
     		</div>
         {% endif %}
 	</div>
